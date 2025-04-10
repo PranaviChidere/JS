@@ -1,4 +1,4 @@
-name: Format JS Code with Prettier
+name: Prettier Format Check
 
 on:
   push:
@@ -7,13 +7,18 @@ on:
     branches: [main]
 
 jobs:
-  format:
+  prettier:
+    name: Format JS using Prettier
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Run Prettier
         uses: creyD/prettier_action@v4.3
         with:
-          prettier_options: --write .
+          prettier_options: --write "**/*.js"
+          commit_message: Prettified Code!
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
