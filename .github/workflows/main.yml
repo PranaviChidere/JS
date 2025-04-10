@@ -1,0 +1,33 @@
+name: Prettier Code Formatter
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Run Prettier to format the code
+      - name: Run Prettier
+        uses: prettier/action@v4
+        with:
+          prettier_options: '--write .'
+
+      # Commit and push changes if formatting was applied
+      - name: Commit Changes
+        if: ${{ steps.prettier.outputs.changes == 'true' }}
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git commit -am "style: format code with Prettier"
+          git push
