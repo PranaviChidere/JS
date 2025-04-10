@@ -1,4 +1,4 @@
-name: Prettier Format Check
+name: Format Code with Prettier
 
 on:
   push:
@@ -7,8 +7,7 @@ on:
     branches: [main]
 
 jobs:
-  prettier:
-    name: Format JS using Prettier
+  format:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,7 +17,6 @@ jobs:
       - name: Run Prettier
         uses: creyD/prettier_action@v4.3
         with:
-          prettier_options: '--write "**/*.js"'
-          commit_message: Prettified Code!
+          prettier_options: --write **/*.js
         env:
-          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
