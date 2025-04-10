@@ -1,4 +1,4 @@
-name: Prettier Format Check
+name: Auto Format with Prettier
 
 on:
   push:
@@ -8,26 +8,17 @@ on:
 
 jobs:
   format:
-    name: Run Prettier
+    name: Prettier Auto Format
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run Prettier
-        run: npx prettier --check .
-
-      - name: Fail if Prettier detects unformatted files
-        if: failure()
-        run: |
-          echo "Code is not formatted. Please run Prettier locally before committing."
-          exit 1
+      - name: Run Prettier and auto commit
+        uses: creyD/prettier_action@v4.3
+        with:
+          prettier_options: --write "**/*.js"
+          commit_message: "chore: auto-format with Prettier"
