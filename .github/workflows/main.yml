@@ -19,7 +19,7 @@ jobs:
 
       # Run Prettier to format the code
       - name: Run Prettier
-        uses: prettier/action@v4
+        uses: prettier/action@v4.0.0 # Update to the correct version
         with:
           prettier_options: '--write .'
 
