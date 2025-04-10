@@ -1,4 +1,4 @@
-name: Auto Format with Prettier
+name: Format JS Code with Prettier
 
 on:
   push:
@@ -8,17 +8,12 @@ on:
 
 jobs:
   format:
-    name: Prettier Auto Format
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: Run Prettier and auto commit
+      - name: Run Prettier
         uses: creyD/prettier_action@v4.3
         with:
-          prettier_options: --write "**/*.js"
-          commit_message: "chore: auto-format with Prettier"
+          prettier_options: --write .
