@@ -1,33 +1,33 @@
-name: Prettier Code Formatter
+name: Prettier Format Check
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
   pull_request:
-    branches:
-      - main
+    branches: [main]
 
 jobs:
   format:
+    name: Run Prettier
     runs-on: ubuntu-latest
 
     steps:
-      # Checkout the repository
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # Run Prettier to format the code
-      - name: Run Prettier
-        uses: prettier/action@v4.0.0 # Update to the correct version
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          prettier_options: '--write .'
+          node-version: '18'
 
-      # Commit and push changes if formatting was applied
-      - name: Commit Changes
-        if: ${{ steps.prettier.outputs.changes == 'true' }}
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Prettier
+        run: npx prettier --check .
+
+      - name: Fail if Prettier detects unformatted files
+        if: failure()
         run: |
-          git config user.name "GitHub Actions"
-          git config user.email "actions@github.com"
-          git commit -am "style: format code with Prettier"
-          git push
+          echo "Code is not formatted. Please run Prettier locally before committing."
+          exit 1
