@@ -1,32 +1,42 @@
-const users=[{id:1,name:"Alice",age:25},{id:2,name:"Bob",age:30},{id:3,name:"Charlie",age:28}];
-
-function getUserById(id){return users.find(user=>user.id===id);}
-
-function printUsers(){
-console.log("User List:");
-for(let i=0;i<users.length;i++){
-const user=users[i];
-console.log(user.name+" ("+user.age+" years old)");
-}
-}
-
-function addUser(name,age){
-const id=users.length+1;
-users.push({id,name,age});
-console.log("Added new user:",name);
-}
-
-function removeUser(id){
-const index=users.findIndex(user=>user.id===id);
-if(index!==-1){
-users.splice(index,1);
-console.log("Removed user with id",id);
-}else{
-console.log("User not found");
-}
-}
-
-addUser("David",22);removeUser(2);printUsers();console.log(getUserById(3));
+function fetchData(url){
+    fetch(url).then(response=>{
+    return response.json()
+    }).then(data=>{
+    console.log("Data received:",data)
+    let result=processData(data)
+    displayResult(result)
+    }).catch(error=>{
+    console.error("Error fetching data:",error)
+    })
+    }
+    
+    function processData(data){
+    let total=0;
+    data.items.forEach(item=>{
+    total+=item.value
+    })
+    return { count: data.items.length, total: total }
+    }
+    
+    function displayResult(result){
+    const output=document.getElementById("output")
+    output.innerHTML="<h2>Results</h2><p>Total: "+result.total+"</p><p>Count: "+result.count+"</p>"
+    }
+    
+    function init(){
+    const button=document.getElementById("fetchButton")
+    button.addEventListener("click",()=>{
+    const url=document.getElementById("apiUrl").value
+    if(url){
+    fetchData(url)
+    }else{
+    alert("Please enter a URL")
+    }
+    })
+    }
+    
+    window.onload=init
+    
 
 
 
