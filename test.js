@@ -27,3 +27,6 @@ console.log("User not found");
 }
 
 addUser("David",22);removeUser(2);printUsers();console.log(getUserById(3));
+
+
+
